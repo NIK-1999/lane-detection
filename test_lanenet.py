@@ -8,6 +8,7 @@
 """
 test LaneNet model on single image
 """
+
 import argparse
 import os.path as ops
 import time
@@ -21,6 +22,7 @@ from lanenet_model import lanenet
 from lanenet_model import lanenet_postprocess
 from local_utils.config_utils import parse_config_utils
 from local_utils.log_util import init_logger
+from IPython import display
 
 CFG = parse_config_utils.lanenet_cfg
 LOG = init_logger.get_logger(log_file_name_prefix='lanenet_test')
@@ -133,15 +135,19 @@ def test_lanenet(image_path, weights_path):
             instance_seg_image[0][:, :, i] = minmax_scale(instance_seg_image[0][:, :, i])
         embedding_image = np.array(instance_seg_image[0], np.uint8)
 
-        plt.figure('mask_image')
-        plt.imshow(mask_image[:, :, (2, 1, 0)])
-        plt.figure('src_image')
-        plt.imshow(image_vis[:, :, (2, 1, 0)])
-        plt.figure('instance_image')
-        plt.imshow(embedding_image[:, :, (2, 1, 0)])
-        plt.figure('binary_image')
-        plt.imshow(binary_seg_image[0] * 255, cmap='gray')
-        plt.show()
+        # plt.figure('mask_image')
+        # plt.imshow(mask_image[:, :, (2, 1, 0)])
+        # plt.figure('src_image')
+        # plt.imshow(image_vis[:, :, (2, 1, 0)])
+        # plt.figure('instance_image')
+        # plt.imshow(embedding_image[:, :, (2, 1, 0)])
+        # plt.figure('binary_image')
+        # plt.imshow(binary_seg_image[0] * 255, cmap='gray')
+        # plt.show()
+        cv2.imwrite("mask.jpg", mask_image)
+        cv2.imwrite("src.jpg", image_vis)
+        cv2.imwrite("instance.jpg", embedding_image)
+        cv2.imwrite("binary.jpg", binary_seg_image[0] * 255)
 
     sess.close()
 
